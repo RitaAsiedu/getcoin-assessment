@@ -1,0 +1,51 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: crypto-cluster
+  region: us-east-1
+  version: "1.30"
+
+iam: 
+  serviceRoleARN: "arn:aws:iam::136688660029:role/aws-service-role/eks.amazonaws.com/AWSServiceRoleForAmazonEKS"
+
+vpc:
+  id: vpc-060675323cdfcf4c5
+  securityGroup: sg-0c511e392c5a9e893
+  cidr: "172.31.0.0/16"
+  subnets:
+    public:
+      utrains_default_subnet:
+        id: subnet-0836c688f462bf052
+      eks_subnet:
+        id: subnet-0969637f11c89064a
+
+  clusterEndpoints:
+    publicAccess: true
+    privateAccess: true
+
+addons:
+  - name: kube-proxy
+    version: latest
+    resolveConflicts: overwrite
+  - name: vpc-cni
+    version: latest
+    resolveConflicts: overwrite
+  - name: core-dns
+    version: latest
+    resolveConflicts: overwrite
+  - name: aws-ebs-csi-driver
+    version: latest
+    resolveConflicts: overwrite
+
+managedNodeGroups:
+  - name: crypto-pool
+    instanceType: t2.small
+    amiFamily: "AmazonLinux2023"
+    minSize: 1
+    maxSize: 5
+    desiredCapacity: 1
+    volumeSize: 20
+    privateNetworking: false
+    iam:
+      instanceRoleARN: "arn:aws:iam::136688660029:role/aws-service-role/eks-nodegroup.amazonaws.com/AWSServiceRoleForAmazonEKSNodegroup"
