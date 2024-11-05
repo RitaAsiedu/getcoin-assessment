@@ -1,63 +1,40 @@
-# Kubernetes provider configuration
-provider "kubernetes" {
-  host                   = module.eks.cluster_endpoint
-  cluster_ca_certificate = module.eks.cluster_ca_certificate
-  exec {
-    api_version = "client.authentication.k8s.io/v1beta1"
-    command     = "aws"
-    args = [
-      "eks",
-      "get-token",
-      "--cluster-name",
-      module.eks.cluster_name
-    ]
+resource "aws_s3_bucket" "terraform_state" {
+  bucket = var.bucket_name
+
+  # Prevent accidental deletion of this S3 bucket
+  lifecycle {
+    prevent_destroy = true
+  }
+
+  tags = {
+    Name    = "Crypto S3 Bucket"
+    Environment     = "Terraform"
   }
 }
 
-module "networking" {
-  source = "./modules/networking"
-  vpc_cidr           = var.vpc_cidr
-  availability_zones = var.availability_zones
-  cluster_name        = module.eks.cluster_name
+resource "aws_s3_bucket_versioning" "terraform_state" {
+  bucket = aws_s3_bucket.terraform_state.id
+  versioning_configuration {
+    status = "Enabled"
+  }
 }
 
-module "ecr" {
-  source = "./modules/ecr"
-  
-  repository_name = var.repository_name
+resource "aws_s3_bucket_server_side_encryption_configuration" "terraform_state" {
+  bucket = aws_s3_bucket.terraform_state.id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
 }
 
-module "eks" {
-  source = "./modules/eks"
-  
-  private_subnets = module.networking.private_subnet_ids
-  cluster_sg_id   = module.networking.cluster_sg_id
- # node_group_sg   = module.networking.eks_node_group_sg_id
-}
+# Block all public access
+resource "aws_s3_bucket_public_access_block" "terraform_state" {
+  bucket = aws_s3_bucket.terraform_state.id
 
-
-module "docker" {
-  source          = "./modules/docker"
-
-  ecr_repository_url = module.ecr.repository_url
-  docker_context_path = "${path.root}/../app"
-  dockerfile_path = "Dockerfile"
-  aws_region = var.aws_region
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
 } 
-
-module "k8s_app" {
-  source = "./modules/k8s-app"
-  
-  app_name        = var.app_name
-  image_url       = "${module.ecr.repository_url}:latest"
-  eks_cluster_name = module.eks.cluster_name
-
-  depends_on = [module.docker]
-} 
-
-output "application_endpoint"{
-  value = "http://${module.k8s_app.load_balancer_hostname}"
-  description = "dns name of the load balancer"
-  
-}
-# added a comment

@@ -4,7 +4,7 @@ variable "cluster_name" {
     default         = "crypto-cluster"
 }
 
-variable "private_subnets" {
+variable "public_subnets" {
   description = "List of private subnet IDs for the EKS node group"
   type        = list(string)
 } 
