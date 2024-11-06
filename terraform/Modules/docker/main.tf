@@ -22,4 +22,3 @@ resource "null_resource" "docker_push" {
 
   depends_on = [docker_image.image]
 }
-#comment

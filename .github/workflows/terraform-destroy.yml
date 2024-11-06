@@ -75,7 +75,7 @@ jobs:
       run: |
         cd terraform
         terraform plan \
-          -var="bucket_name=cryptos3bucket"
+          -var="bucket_name=cryptos3bucket1"
 
     - name: Terraform Destroy
       run: |
