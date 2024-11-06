@@ -17,7 +17,7 @@ variable "availability_zones" {
 variable "bucket_name"{
     description     = "s3 bucket name"
     type            = string
-    default         = "cryptos3bucket"
+    default         = "cryptos3bucket1"
 }
 
 variable "repository_name" {
