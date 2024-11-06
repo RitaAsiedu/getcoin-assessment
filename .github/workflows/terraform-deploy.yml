@@ -63,21 +63,21 @@ jobs:
       run: |
         cd terraform
         terraform init \
-          -backend-config="bucket=cryptos3bucket" \
+          -backend-config="bucket=cryptos3bucket1" \
           -backend-config="key=terraform.tfstate"
 
     - name: Terraform Plan
       run: |
         cd terraform
         terraform plan \
-          -var="bucket_name=cryptos3bucket"
+          -var="bucket_name=cryptos3bucket1"
 
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
       run: |
         cd terraform
         terraform apply -auto-approve \
-          -var="bucket_name=cryptos3bucket"
+          -var="bucket_name=cryptos3bucket1"
 
     - name: Terraform Output
       run: |

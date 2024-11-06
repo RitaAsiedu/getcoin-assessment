@@ -81,4 +81,4 @@ jobs:
       run: |
         cd terraform
         terraform destroy -auto-approve  \
-          -var="bucket_name=cryptos3bucket"
+          -var="bucket_name=cryptos3bucket1"
