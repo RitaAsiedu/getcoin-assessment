@@ -63,7 +63,7 @@ jobs:
       run: |
         cd terraform
         terraform init \
-          -backend-config="bucket=cryptos3bucket" \
+          -backend-config="bucket=cryptos3bucket1" \
           -backend-config="key=terraform.tfstate"
 
     - name: Terraform Plan
