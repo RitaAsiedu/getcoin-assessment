@@ -1,14 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: crypto-price-service
-  labels:
-    app: crypto-price-service
+  name: crypto-service
 spec:
+  type: LoadBalancer
+  port:
+  - port: 80
+    targetPort: 5000
+    protocol: TCP
   selector:
-    app: crypto-price-service
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 5000
-  type: LoadBalancer  # Use ClusterIP if only accessible within the cluster
+    app: crypto-app
