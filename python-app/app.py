@@ -38,6 +38,17 @@ def fetch_crypto_data(crypto_name):
     # else:
     #     print("Error:", response.status_code)
 
+@app.route('/', methods=['GET'])
+def home():
+    return jsonify({
+        "message": "Welcome to the Crypto API!",
+        "endpoints": {
+            "bitcoin": "/bitcoin",
+            "ethereum": "/ethereum"
+        }
+    }), 200
+
+
 @app.route('/bitcoin', methods=['GET'])
 def bitcoin():
     data = fetch_crypto_data("bitcoin")
@@ -52,5 +63,7 @@ def ethereum():
         return jsonify(data), 200
     return jsonify({"error": "Could not retrieve Ethereum data"}), 500
 
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5000)/bitcoin
+
