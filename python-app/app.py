@@ -45,9 +45,7 @@ def home():
         "message": "Welcome to the Crypto API!",
         "endpoints": {  
            "bitcoin": f"{base_url}bitcoin",
-            "ethereum": f"{base_url}ethereum"
-#           "bitcoin": "/bitcoin",
-#          "ethereum": "/ethereum"
+           "ethereum": f"{base_url}ethereum"
         }
     }), 200
 
