@@ -20,3 +20,8 @@ variable "image_url" {
     description = "Image URL"
     type        = string
 }
+
+variable "image_tag" {
+  description = "The tag for the container image"
+  default     = "latest"
+}
