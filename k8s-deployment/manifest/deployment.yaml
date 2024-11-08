@@ -14,7 +14,8 @@ spec:
     spec:
       containers:
         - name: crypto-container
-          image: your-docker-image-url
+          image: "136688660029.dkr.ecr.us-east-1.amazonaws.com/crypto-repo:latest"
+          
           ports:
             - containerPort: 5000
           resources:
