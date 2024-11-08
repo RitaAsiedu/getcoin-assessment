@@ -23,9 +23,7 @@ resource "kubernetes_deployment" "app" {
         container {
           name  = var.app_name
           image = var.image_url
-          port {
-            container_port = 5000  # Expose port 5000 in the container
-                 }
+          
           resources {
             limits = {
               cpu    = "1"
