@@ -40,14 +40,16 @@ def fetch_crypto_data(crypto_name):
 
 @app.route('/', methods=['GET'])
 def home():
+    base_url = requests.host_url  # This retrieves the base URL of the server
     return jsonify({
         "message": "Welcome to the Crypto API!",
-        "endpoints": {
-            "bitcoin": "/bitcoin",
-            "ethereum": "/ethereum"
+        "endpoints": {  
+           "bitcoin": f"{base_url}bitcoin",
+            "ethereum": f"{base_url}ethereum"
+#           "bitcoin": "/bitcoin",
+#          "ethereum": "/ethereum"
         }
     }), 200
-
 
 @app.route('/bitcoin', methods=['GET'])
 def bitcoin():
