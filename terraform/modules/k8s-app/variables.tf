@@ -18,7 +18,7 @@ variable    "eks_cluster_name"{
 
 variable "image_url" {
     description = "Image URL"
-    type        = string
+ #   type        = string
 }
 
 variable "image_tag" {
