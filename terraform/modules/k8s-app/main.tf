@@ -22,7 +22,7 @@ resource "kubernetes_deployment" "app" {
       spec {
         container {
           name  = var.app_name
-          image = "${var.image_url}:${var.image_tag}"
+          image = var.image_url
           resources {
             limits = {
               cpu    = "0.5"
